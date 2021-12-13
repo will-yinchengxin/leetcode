@@ -33,3 +33,44 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	}
 	return nil
 }
+
+func getIntersectionNodeAno(headA, headB *ListNode) *ListNode {
+	if headA == nil || headB == nil {
+		return nil
+	}
+
+	// 求出 A, B 两个链表的长度
+	lenA := 0
+	prevA := headA
+	for prevA != nil {
+		lenA++
+		prevA = prevA.Next
+	}
+	lenB := 0
+	prevB := headB
+	for prevB != nil {
+		lenB++
+		prevB = prevB.Next
+	}
+	// 让较长的链表走 long - short 步
+	prevA = headA
+	prevB = headB
+	if lenA >= lenB {
+		for i := 0; i < lenA - lenB; i++ {
+			prevA = prevA.Next
+		}
+	} else {
+		for i := 0; i < lenB - lenA; i++ {
+			prevB = prevB.Next
+		}
+	}
+	// 两个链表同时遍历
+	for prevA != nil && prevB != nil && prevA != prevB {
+		prevA = prevA.Next
+		prevB = prevB.Next
+	}
+	if prevA == nil || prevB == nil {
+		return nil
+	}
+	return prevA
+}

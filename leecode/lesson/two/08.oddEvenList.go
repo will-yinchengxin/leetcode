@@ -44,3 +44,32 @@ func oddEvenList(head *ListNode) *ListNode {
 	odd.Next = evenHead
 	return head
 }
+
+func oddEvenListAno(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
+	oddHead := new(ListNode)
+	oddTail := oddHead
+	evenHead := new(ListNode)
+	evenTail := evenHead
+
+	p := head
+	count := 1
+	for p != nil {
+		tmp := p.Next
+		if count % 2 == 1 { // 奇数
+			p.Next = nil
+			oddTail.Next = p
+			oddTail = oddTail.Next
+		} else { // 偶数
+			p.Next = nil
+			evenTail.Next = p
+			evenTail = evenTail.Next
+		}
+		count++
+		p = tmp
+	}
+	oddTail.Next = evenHead.Next
+	return oddHead.Next
+}

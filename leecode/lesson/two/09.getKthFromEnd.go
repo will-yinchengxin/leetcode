@@ -28,3 +28,28 @@ func getKthFromEnd(head *ListNode, k int) *ListNode {
 	}
 	return tail
 }
+
+func getKthFromEndAno(head *ListNode, k int) *ListNode {
+	if head == nil || k <= 0 {
+		return nil
+	}
+	fast := head
+	slow := head
+
+	count := 0
+	for fast != nil { // 遍历第一遍使链表到达正数 k 的位置
+		count ++
+		if count == k {
+			break
+		}
+		fast = fast.Next
+	}
+	if fast == nil { // 链表长度不足 k
+		return nil
+	}
+	for fast.Next != nil {
+		slow = slow.Next
+		fast = fast.Next
+	}
+	return slow
+}

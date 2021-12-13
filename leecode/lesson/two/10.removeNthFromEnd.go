@@ -44,3 +44,38 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 
 	return result.Next
 }
+
+
+func removeNthFromEndAno(head *ListNode, n int) *ListNode {
+	if head == nil || n <= 0 {
+		return nil
+	}
+	fast := head
+	slow := head
+
+	count := 0
+	for fast != nil { // 遍历第一遍使链表到达正数 k 的位置
+		count ++
+		if count == n {
+			break
+		}
+		fast = fast.Next
+	}
+	if fast == nil { // 链表长度不足 k
+		return head
+	}
+
+	// 添加查找的 pre
+	pre := new(ListNode)
+	for fast.Next != nil {
+		pre = slow
+		slow = slow.Next
+		fast = fast.Next
+	}
+	if pre.Next == nil {
+		head = head.Next
+	} else {
+		pre.Next = slow.Next
+	}
+	return head
+}

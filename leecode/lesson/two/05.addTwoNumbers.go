@@ -20,6 +20,48 @@ package two
 	输出：     [8,9,9,9,0,0,0,1]
 		      [8,9,9,0,0,0]
 */
+func addTwoNumbersAno(l1 *ListNode, l2 *ListNode) *ListNode {
+	if l1 == nil && l2 == nil {
+		return nil
+	}
+	prevA := l1
+	prevB := l2
+	result := new(ListNode)
+	tail := result
+	tag := 0
+	for prevA != nil || prevB != nil {
+		sum := 0
+		if prevA != nil {
+			sum += prevA.Val
+			prevA = prevA.Next
+		}
+		if prevB != nil {
+			sum += prevB.Val
+			prevB = prevB.Next
+		}
+		if tag > 0 {
+			sum += tag
+			tag = 0
+		}
+		// 计算和的部分
+		val := 0
+		if sum >= 10 {
+			val = sum - 10
+			tag = 1
+		} else {
+			val = sum
+		}
+		tail.Next = new(ListNode)
+		tail.Next.Val = val
+		tail = tail.Next
+	}
+	if tag > 0 {
+		tail.Next = new(ListNode)
+		tail.Next.Val = tag
+	}
+	return result.Next
+}
+
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	// 处理 空 情况
 	if l1 == nil && l2 == nil {
@@ -93,46 +135,4 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 		prev.Next.Val = Base_System
 	}
 	return result
-}
-
-func addTwoNumbersAno(l1 *ListNode, l2 *ListNode) *ListNode {
-	if l1 == nil && l2 == nil {
-		return nil
-	}
-	prevA := l1
-	prevB := l2
-	result := new(ListNode)
-	tail := result
-	tag := 0
-	for prevA != nil || prevB != nil {
-		sum := 0
-		if prevA != nil {
-			sum += prevA.Val
-			prevA = prevA.Next
-		}
-		if prevB != nil {
-			sum += prevB.Val
-			prevB = prevB.Next
-		}
-		if tag > 0 {
-			sum += tag
-			tag = 0
-		}
-		// 计算和的部分
-		val := 0
-		if sum >= 10 {
-			val = sum - 10
-			tag = 1
-		} else {
-			val = sum
-		}
-		tail.Next = new(ListNode)
-		tail.Next.Val = val
-		tail = tail.Next
-	}
-	if tag > 0 {
-		tail.Next = new(ListNode)
-		tail.Next.Val = tag
-	}
-	return result.Next
 }

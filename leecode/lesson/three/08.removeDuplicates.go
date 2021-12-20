@@ -18,16 +18,11 @@ func RemoveDuplicates(s string) string {
 	}
 	var stack []byte
 	for i := 0; i < lenS; i++ {
-		if len(stack) == 0 {
-			stack = append(stack, s[i])
+		if len(stack) > 0 && stack[len(stack) - 1] == s[i] {
+			stack = stack[:len(stack) - 1]
 			continue
-		} else {
-			if stack[len(stack) - 1] == s[i] {
-				stack = stack[:len(stack) - 1]
-				continue
-			}
-			stack = append(stack, s[i])
 		}
+		stack = append(stack, s[i])
 	}
 	// 循环重组数组
 	lenStack := len(stack)

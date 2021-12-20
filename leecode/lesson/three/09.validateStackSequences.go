@@ -20,6 +20,7 @@ package three
 长度 < 1000
 元素大小 < 1000
 */
+
 func ValidateStackSequences(pushed []int, popped []int) bool {
 	lenPush := len(pushed)
 	lenPop := len(popped)
@@ -47,4 +48,38 @@ func ValidateStackSequences(pushed []int, popped []int) bool {
 		return false
 	}
 	return true
+}
+
+// 5 个数对应了 10 次操作, 5 次 pop 5 次 push
+// |__|__|__|__|__|__|__|__|__|__| , 10 个位置, 每次不是 pop, 就是 push,
+// 但是不能随便 pop 或者 随便 push, 要看与弹出队列中的数值是否有对应关系,
+// pushed = [1,2,3,4,5], popped = [4,5,3,2,1]
+// 第一个位置, pop 是不可以的, 因为没有元素, 只能 push
+// 第二个位置, pop 是不可以的, 因为栈顶元素不为 4, 只能 push ..... 依次类推
+// 这里的入栈出栈都是操作的 stack
+func ValidateStackSequencesAno(pushed []int, popped []int) bool {
+	lenPush := len(pushed)
+	lenPop := len(popped)
+	if lenPop != lenPush || lenPop == 0 || lenPush == 0 {
+		return true
+	}
+	stack := []int{}
+	i := 0
+	j := 0
+
+	for i < lenPush || j < lenPop {
+		// 出栈
+		if len(stack) > 0 && j < lenPop && stack[len(stack) - 1] == popped[i] {
+			stack = stack[:len(stack) - 1]
+			j++
+			continue
+		}
+		if i < lenPush {
+			stack = append(stack, pushed[i])
+			i++
+			continue
+		}
+		break
+	}
+	return i == lenPush && j == lenPop
 }

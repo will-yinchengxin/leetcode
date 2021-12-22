@@ -59,6 +59,9 @@ import (
 		tips:
 			1) 快速排序, 空间复杂度需要考虑递归函数调用栈的消耗, 原地不需要考虑
 			2) 等差数列求和公式: (首数+尾数)×个数÷2
+			3) go 中排序函数 sort.Slice
+					sort.Slice(intervals, func(i, j int) bool {return intervals[i][0] < intervals[j][0]})
+						sort.Slice(s1, func(i, j int) bool { return s1[i] < s1[j] })
 */
 
 // 冒泡排序(升序)
@@ -284,7 +287,7 @@ func mergeAno(array []int, begin int, mid int, end int) {
 // 非稳定排序: 例: 6 8 7 6 3 5 9 4 , 两个 6 的顺序会发生变化
 func QuickSort(a []int, n int) {
 	// []int{5, 4, 6, 2, 3, 1}, 5
-	quickSort_R(a, 0, 5) // 数组长度 - 1
+	quickSort_R(a, 0, n) // 数组长度 - 1
 	fmt.Println(a)
 }
 func quickSort_R(a []int, begin, end int) {
@@ -298,17 +301,18 @@ func quickSort_R(a []int, begin, end int) {
 func partition(arr []int, low int, high int) int {
 	i, j := low, high-1 // 双指针, 选择最后一个元素作为分区点
 	for {
-		for arr[i] < arr[high] {
-			i++
+		for arr[i] <= arr[high] {
 			if i == high {
 				break
 			}
+			i++
 		}
-		for arr[high] < arr[j] {
-			j--
-			if j == low {
+		// <= 处理 1,1,1 情况
+		for arr[high] <= arr[j] {
+			if j == low {  // 比较在前, -- / ++ 在后, 避免数组越界
 				break
 			}
+			j--
 		}
 		if i >= j {
 			break
@@ -321,6 +325,9 @@ func partition(arr []int, low int, high int) int {
 	//return j
 }
 func swap(arr []int, a int, b int) {
+	if arr[a] == arr[b] {
+		return
+	}
 	temp := arr[a]
 	arr[a] = arr[b]
 	arr[b] = temp

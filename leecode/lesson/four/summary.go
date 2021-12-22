@@ -6,7 +6,30 @@ import (
 
 /*
 	1) 递归
+		- 一些题目的题解, 要使用 备忘录 的功能, 避免重复调用, 造成堆栈溢出
 
+		- 每个函数都对应一个栈帧, 进入函数便会生成, 栈帧包括: 1)参数 2)局部变量 3)返回地址
+
+		- 怎样确定一个问题可以使用递归解决
+			- 规模大的问题和规模小的问题解决思路一样, 仅规模不同,
+			- 利用子问题组合可以得到原问题的解
+			- 存在最小子问题, 可以直接返回结果
+
+		- 使用递归的正确姿势: 假设子问题 B C 已经解决, 然后考虑父问题 A, 找出 递推公式 及 终止条件
+			模板:
+				func f(param) {
+					if .. return // 终止条件
+					.... 		 // 前置逻辑
+					递归函数		 // 子问题
+					....         // 是否需要手动恢复
+				}
+
+		- 切记不要试图梳理清楚递归执行的整个过程, 这实际上进入了思维误区
+
+		- 递归 分析时间复杂度方式:
+			- 递推公式(可化简的式子, 适合用递推公式)
+			- 递归树(具有普适性)
+		- 向下为递的过程, 向上为归的过程
 	2) 排序:
 		排序指标
 			- 时间复杂度
@@ -244,9 +267,25 @@ func mergeAno(array []int, begin int, mid int, end int) {
 }
 
 // 快速排序
-func quickSort(a []int, n int) []int {
-	quickSort_R(a, 0, n - 1)
-	return a
+// 原理与 归并排序 相类似, 归并是递的过程比较简单, 归的过程比较繁琐, 快排是递的过程比较繁琐, 归的过程比较简单
+// 分区点普遍选用最后一个点(分区点的选择直接影响时间复杂度)
+// 1	5	6	2	3	4
+//                      ^ (分区间)
+// [0,i] < 4 | (i+1, j-1) | [j, len-1] > 4
+// 小于4区间   | 未排序区间   | 大于4区间
+
+// 时间复杂度:
+//		1) 分区及其平均: 正好分成了大小接近的两个小区间, 快排的递推公式: T(1) = C, T(n) = 2*T(n/2)+n, 与归并排序完全相同, 所以为 nlogn
+//		2) 分区及其不平均: 数组原本已经有序了 1 3 5 6 8, 如果我们选择最后一个元素作为 分区点(pivot), 分区大小很不均匀, 我们需要进行大约 n 次操作
+// 			才能完成快排的整个过程, 每次扫描 n/2 的元素, 那么时间复杂度就从 nlogn 降到了 n^2
+
+// 空间复杂度与函数调用栈的 max 值有关, 也就是 logn
+// 为原地排序
+// 非稳定排序: 例: 6 8 7 6 3 5 9 4 , 两个 6 的顺序会发生变化
+func QuickSort(a []int, n int) {
+	// []int{5, 4, 6, 2, 3, 1}, 5
+	quickSort_R(a, 0, 5) // 数组长度 - 1
+	fmt.Println(a)
 }
 func quickSort_R(a []int, begin, end int) {
 	if begin >= end {
@@ -257,17 +296,15 @@ func quickSort_R(a []int, begin, end int) {
 	quickSort_R(a, j+1, end)
 }
 func partition(arr []int, low int, high int) int {
-	i, j := low+1, high
-	for true {
-		// 1 , 0
-		for arr[i] < arr[low] {
-			i++ // 2
+	i, j := low, high-1 // 双指针, 选择最后一个元素作为分区点
+	for {
+		for arr[i] < arr[high] {
+			i++
 			if i == high {
 				break
 			}
 		}
-		// 0, len
-		for arr[low] < arr[j] {
+		for arr[high] < arr[j] {
 			j--
 			if j == low {
 				break
@@ -278,8 +315,10 @@ func partition(arr []int, low int, high int) int {
 		}
 		swap(arr, i, j)
 	}
-	swap(arr, low, j)
-	return j
+	swap(arr, high, i)
+	//swap(arr, low, j)
+	return i
+	//return j
 }
 func swap(arr []int, a int, b int) {
 	temp := arr[a]

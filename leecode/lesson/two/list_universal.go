@@ -7,14 +7,22 @@ package two
 
 /*
 解题三要素:
-	1) 遍历的结束条件, p == nil 还是 p.Next == nil
-	2) 指针的初始值 p = head 或者 新增虚拟头节点 或者 其他...
-*/
+	1) 指针的初始值 p = head 或者 新增虚拟头节点 或者 其他...
+	2) 遍历的结束条件, p == nil 还是 p.Next == nil
+	3) 核心逻辑..
 
-/*
-创建新的链表后, 插入方式有两种
+创建新的链表后, 插入方式有两种:
 	1) 头插
+		将 1 插入到 r->2->5->7 中
+			p.Next = r
+			r = p
 	2) 尾插
+
+统计链表的长度:
+	length := 0
+	for node := head; node != nil; node = node.Next {
+		length++
+	}
 */
 
 type ListNode struct {

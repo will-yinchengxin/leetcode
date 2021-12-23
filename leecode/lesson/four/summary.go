@@ -62,6 +62,7 @@ import (
 			3) go 中排序函数 sort.Slice
 					sort.Slice(intervals, func(i, j int) bool {return intervals[i][0] < intervals[j][0]})
 						sort.Slice(s1, func(i, j int) bool { return s1[i] < s1[j] })
+			4) https://www.cs.usfca.edu/~galles/visualization/Algorithms.html  数据结构可视化界面
 */
 
 // 冒泡排序(升序)

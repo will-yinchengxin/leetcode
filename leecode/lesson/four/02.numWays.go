@@ -16,8 +16,9 @@ package four
 	输入：n = 0
 	输出：1
 */
+// 该题目的所有结论与上一题完全相同
 var hashMap = make(map[int]int)
-func numWays(n int) int {
+func NumWays(n int) int {
 	if n == 0 {
 		return 1
 	}
@@ -28,6 +29,9 @@ func numWays(n int) int {
 	if val, ok := hashMap[n]; ok {
 		return val
 	}
-	hashMap[n] = (numWays(n-1) + numWays(n-2)) % mod
+	hashMap[n] = (NumWays(n-1) + NumWays(n-2)) % mod
 	return hashMap[n]
 }
+// 变形, 但是不能连续跳两次2阶
+// https://blog.csdn.net/qq_41512783/article/details/109711869
+//func NumWaysAno(n int) int {}

@@ -10,19 +10,21 @@ package four
 	0 <= 链表长度 <= 1000
 */
 // 递归实现
+// 时间复杂度：O(n)
+// 空间复杂度：O(n+m)
 func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	if l1 == nil && l2 == nil {
 		return nil
 	}
-	result := new(ListNode)
-	prev := result
+	// 结果链表
+	resul := new(ListNode)
+	prev := resul
 
 	// 进行递归
 	prev = mergeTwoLists_r(l1, l2, prev)
 
-	return result.Next
+	return resul.Next
 }
-
 func mergeTwoLists_r(l1 *ListNode, l2 *ListNode, prev *ListNode) *ListNode {
 	if l1 == nil && l2 != nil {
 		prev.Next = l2

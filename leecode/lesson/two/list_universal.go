@@ -18,6 +18,11 @@ package two
 			r = p
 	2) 尾插
 
+	3) 反转列表
+		1->2->3->4->5->NULL
+		head.Next.Next = head
+		head.Next = nil
+
 统计链表的长度:
 	length := 0
 	for node := head; node != nil; node = node.Next {

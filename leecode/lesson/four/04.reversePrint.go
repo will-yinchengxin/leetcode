@@ -14,7 +14,7 @@ type ListNode struct {
 	Next *ListNode
 }
 
-// 递归实现
+// 非递归实现
 func reversePrint(head *ListNode) []int {
 	if head == nil {
 		return nil
@@ -31,7 +31,6 @@ func reversePrint(head *ListNode) []int {
 	}
 	return res
 }
-
 func reverseArr(head *ListNode) []int {
 	arr := []int{}
 	p := head
@@ -40,4 +39,22 @@ func reverseArr(head *ListNode) []int {
 		p = p.Next
 	}
 	return arr
+}
+
+// 递归实现
+var result = []int{}
+func reversePrintAno(head *ListNode) []int {
+	if head == nil {
+		return nil
+	}
+	reverseArrAno(head)
+	return result
+}
+func reverseArrAno(head *ListNode) {
+	// 终止条件
+	if head == nil {
+		return
+	}
+	reverseArrAno(head.Next)
+	result = append(result, head.Val)
 }

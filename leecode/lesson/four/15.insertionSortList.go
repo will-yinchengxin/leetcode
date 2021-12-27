@@ -57,7 +57,7 @@ func insertionSortList(head *ListNode) *ListNode {
 		// 提前记录下 head.Next
 		tmp := p.Next
 		for q.Next != nil && q.Next.Val <= p.Val {
-			q= q.Next
+			q = q.Next
 		}
 		// 2  插入 1->3->5 -- 头插
 		p.Next = q.Next

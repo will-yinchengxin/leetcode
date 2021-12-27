@@ -45,15 +45,15 @@ func reversePairsMerge(array []int, begin int, mid int, end int) {
 	rightSize := mid + 1
 	size := end - begin + 1
 
-	result := make([]int, 0, size)
+	resultAno := make([]int, 0, size)
 	for leftSize <= mid && rightSize <= end {
 		// 小的元素先放进辅助数组里
 		if array[leftSize] <= array[rightSize] {
-			result = append(result, array[leftSize])
+			resultAno = append(resultAno, array[leftSize])
 			Cnt += rightSize - (mid+1)
 			leftSize++
 		} else {
-			result = append(result, array[rightSize])
+			resultAno = append(resultAno, array[rightSize])
 			rightSize++
 		}
 	}
@@ -61,13 +61,13 @@ func reversePairsMerge(array []int, begin int, mid int, end int) {
 
 	for ; leftSize <= mid; leftSize++ {
 		Cnt += end - (mid + 1) + 1
-		result = append(result, array[leftSize])
+		resultAno = append(resultAno, array[leftSize])
 	}
 	for ; rightSize <= end; rightSize++ {
-		result = append(result, array[leftSize])
+		resultAno = append(resultAno, array[leftSize])
 	}
 	// 将辅助数组的元素复制回原数组，这样该辅助空间就可以被释放掉
 	for i := 0; i < size; i++ {
-		array[begin+i] = result[i]
+		array[begin+i] = resultAno[i]
 	}
 }

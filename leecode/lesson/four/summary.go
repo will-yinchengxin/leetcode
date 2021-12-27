@@ -61,8 +61,8 @@ import (
 			2) 等差数列求和公式: (首数+尾数)×个数÷2
 			3) 等比数列求和公式: 2^n - 1 (1 2 4 8 = 2^4 - 1)
 			4) go 中排序函数 sort.Slice
-					sort.Slice(intervals, func(i, j int) bool {return intervals[i][0] < intervals[j][0]})
-						sort.Slice(s1, func(i, j int) bool { return s1[i] < s1[j] })
+					sort.Slice(intervals, func(i, j int) bool {return intervals[i][0] < intervals[j][0]}) // 二维数组进行排序
+						sort.Slice(s1, func(i, j int) bool { return s1[i] < s1[j] }) // 字符串转切片进行排序
 			5) https://www.cs.usfca.edu/~galles/visualization/Algorithms.html  数据结构可视化界面
 */
 

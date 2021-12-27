@@ -44,27 +44,27 @@ func findKthLargestMerge(a []int, begin, mid, end int) {
 	rightSize := mid + 1
 	size := end - begin + 1
 	// 以中间点为分界点, 左右两指针 同时 向末尾 遍历比较
-	result := make([]int, 0 , size)
+	resultAno := make([]int, 0 , size)
 	for leftSize <= mid && rightSize <= end {
 		// 小的元素先放进辅助数组里
-		if result[leftSize] < result[rightSize] {
-			result = append(result, result[leftSize])
+		if resultAno[leftSize] < resultAno[rightSize] {
+			resultAno = append(resultAno, resultAno[leftSize])
 			leftSize++
 		} else {
-			result = append(result, result[rightSize])
+			resultAno = append(resultAno, resultAno[rightSize])
 			rightSize++
 		}
 	}
 	// 将剩下的元素追加到辅助数组后面
 	if leftSize <= mid {
-		result = append(result, result[leftSize:mid+1]...)
+		resultAno = append(resultAno, resultAno[leftSize:mid+1]...)
 	}
 	if rightSize <= end {
-		result = append(result, result[rightSize:end+1]...)
+		resultAno = append(resultAno, resultAno[rightSize:end+1]...)
 	}
 	// 将辅助数组的元素复制回原数组，这样该辅助空间就可以被释放掉
 	for i := 0; i < size; i++ {
-		result[begin+i] = result[i]
+		resultAno[begin+i] = resultAno[i]
 	}
 	return
 }

@@ -31,10 +31,6 @@ func Merge12(intervals [][]int) [][]int {
 	}
 	// 进行一个排序()
 	sort.Slice(intervals, func(i, j int) bool {return intervals[i][0] < intervals[j][0]})
-	// 1,4  0,0
-	// 1,4  0,2  3,5
-	// 1,4  5,6
-	// 0,4  0,5
 	res := [][]int{}
 	res = append(res, intervals[0])
 	for i := 1; i < lenI; i++ {
@@ -55,6 +51,6 @@ func Merge12(intervals [][]int) [][]int {
 			}
 		}
 	}
-	//fmt.Println(res)
+	// fmt.Println(res)
 	return res
 }

@@ -24,6 +24,8 @@ func mergeA(A []int, m int, B []int, n int)  {
 	sort.Ints(A)
 }
 // 双指针
+// 时间复杂度 O(m+n)
+// 空间复杂度O(m+n)
 func MergeB(A []int, m int, B []int, n int) {
 	lenA := len(A)
 	sortArr := make([]int, 0, lenA)
@@ -40,4 +42,33 @@ func MergeB(A []int, m int, B []int, n int) {
 	sortArr = append(sortArr, A[i:m]...)
 	sortArr = append(sortArr, B[j:n]...)
 	copy(A[0:], sortArr)
+}
+
+// 双指针, 从末尾向头部开始遍历
+// [1,2,3,0,0,0] 3 -> 2 -> 1, [2,5,6] 6 -> 5 -> 2
+// 时间复杂度 O(m+n)
+// 空间复杂度O(1)
+func MergeC(A []int, m int, B []int, n int) {
+	lenA := len(A)
+	i, j, end := m-1, n-1, lenA-1
+	for i >= 0 && j >= 0 && end >= 0 {
+		if A[i] > B[j] {
+			A[end] = A[i]
+			i--
+		} else {
+			A[end] = B[j]
+			j--
+		}
+		end--
+	}
+	for i >= 0 && end >= 0 {
+		A[end] = A[i]
+		i--
+		end--
+	}
+	for j >= 0 && end >= 0 {
+		A[end] = B[j]
+		j--
+		end--
+	}
 }

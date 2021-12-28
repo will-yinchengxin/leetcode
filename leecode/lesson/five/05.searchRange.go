@@ -1,4 +1,7 @@
 package five
+
+import "sort"
+
 /*
 给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
 如果数组中不存在目标值 target，返回[-1, -1]。
@@ -25,38 +28,23 @@ package five
 	nums是一个非递减数组
 	-10^9<= target<= 10^9
 */
-// 这种方式会超时
+// 分别寻找左边第一个 target 与 右边第一个 target
 func searchRange(nums []int, target int) []int {
 	lenN := len(nums)
 	low := 0
 	high := lenN - 1
 
 	res := []int{-1, -1}
+
+	// 寻找左边第一个 target
 	for low <= high {
 		mid := low + (high - low) / 2 // 避免数组越界
 		if nums[mid] == target {
-			end := mid + 1
-			start := mid - 1
-			for ; start >= 0; start--  {
-				if nums[end] != target {
-					break
-				}
-			}
-			for ; end <= high; end++ {
-				if nums[end] != target {
-					break
-				}
-			}
-			// 判断首位元素
-			if nums[start] == target {
-				res[0] = start
+			if mid == 0 || nums[mid-1] != target {
+				res[0] = mid
+				break
 			} else {
-				res[0] = start+1
-			}
-			if nums[end] == target {
-				res[1] = end
-			} else  {
-				res[1] = end - 1
+				high = mid - 1
 			}
 		} else if nums[mid] > target {
 			high = mid - 1
@@ -64,5 +52,34 @@ func searchRange(nums []int, target int) []int {
 			low = mid + 1
 		}
 	}
+	// 寻找右边第一个 target 元素
+	low = 0
+	high = lenN-1
+	for low <= high {
+		mid := low + (high - low) / 2 // 避免数组越界
+		if nums[mid] == target {
+			if mid == lenN-1 || nums[mid+1] != target {
+				res[1] = mid
+				break
+			} else {
+				low = mid + 1
+			}
+		} else if nums[mid] > target {
+			high = mid - 1
+		} else {
+			low = mid + 1
+		}
+	}
+
 	return res
+}
+
+// 使用 api
+func searchRangeAno(nums []int, target int) []int {
+	leftmost := sort.SearchInts(nums, target) // 返回第一个 nums[i] >= target
+	if leftmost == len(nums) || nums[leftmost] != target {
+		return []int{-1, -1}
+	}
+	rightmost := sort.SearchInts(nums, target + 1) - 1
+	return []int{leftmost, rightmost}
 }

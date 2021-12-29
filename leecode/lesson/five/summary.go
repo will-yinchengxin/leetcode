@@ -7,14 +7,8 @@ package five
 		- 对于 low == high 的情况, 必要的时候特殊处理, 在 while 内部补充退出条件
 		- 返回值永远是 mid, 而不要是 low 或者 high
 		- low 或者 high 的更新条件永远是 low=mid+1 和 high=mid-1
-		- 对于非确定性查找, 使用前后探测法, 来确定搜索区间  !!!
+		- 对于非确定性查找, 使用前后探测法, 来确定搜索区间  !!! (确定性值不需要前后探测, 如找指定 target)
 		- 先处理命中情况, 再处理在左右半部分查找的情况
-
-	非确定性查找:
-		- 第一个, 最后一个相等的
-		- 第一个大于等于的,最后一个小于等于的
-		- 循环数组寻找最小值
-		- 寻找峰值
 
 	模板:
 		func bSearch(a []int, len int, val int) int {
@@ -32,6 +26,96 @@ package five
 			}
 			return -1
 		}
+
+	问题类型:
+		- 第一个, 最后一个相等的 (2 3 4 4 4 6, target=4)
+			1) 第一个等于target: (mid == 0) || arr[mid - 1] != target
+			2) 最后一个等于target: (mid == len - 1) || (arr[mid + 1] != target)
+
+
+		- 第一个大于等于的,最后一个小于等于 (1 3 5 5 7 8 9, target=6)
+			1) 第一个大于等于target:
+				if(arr[mid] >= target) {
+					// 先处理命中
+					if (mid == 0 || arr[mid-1] < target) {
+						// 返回的永远是mid
+						return mid
+					} else {
+						high = mid - 1
+					}
+				} else {
+					low = mid + 1
+				}
+			2) 最后一个小于等于target:
+				if(arr[mid] <= target) {
+					if (mid == len -1) || (arr[mid+1] > target) {
+						return mid
+					} else {
+						low = mid + 1
+					}
+				} else {
+					high = mid - 1
+				}
+
+
+		- 循环有序数组(无重复), 查找指定 X (7 9 10 11 15 1 2 3 5 6, target=11)
+			- 寻找 有序区间 与 无序区间, 判断是 左有序,右循环有序 还是 右有序,左循环有序
+				判别 左有序,右循环有序: arr[low] <= arr[mid]
+				判别 右有序,左循环有序: arr[mid] <= arr[high]
+			- 判断 target 是否在有序区间内(更容易判断)
+				左有序(arr[low] <= arr[mid]):
+					if target >= arr[low] && target < arr[mid] {
+						high = mid - 1
+					} else {
+						low = mid + 1
+					}
+				右有序(arr[mid] <= arr[high]):
+					if target <= nums[high] && target > a[mid] {
+						low = mid + 1
+					} else {
+						high = mid - 1
+					}
+				最终:
+					for low <= high {
+						mid := low + (high - low)/2
+						if nums[mid] == target {
+							return mid
+						} else if nums[low] <= nums[mid] { // 左有序
+							if target >= nums[low] && target < nums[mid] {
+								high = mid - 1
+							} else {
+								low = mid + 1
+							}
+						} else { 							// 右有序
+							if target > nums[mid] && target <= nums[high] {
+								low = mid + 1
+							} else {
+								high = mid - 1
+							}
+						}
+					}
+
+		- 循环有序数组(无重复), 查找 Min/Max (7 9 10 11 15 1 2 3 5 6, Mix)
+			1) 先处理命中,再处理未命中
+			2) 未命中情况以 有序区间 和 无序区间来区分
+			2) 使用前后探测方式, 判断值
+			3) 处理越界的情况
+
+			- Mix 命中 (mid != 0 && nums[mid] < nums[mid-1]) || (mid == 0 && nums[mid] < nums[high]) { return mid }
+			- Mix 一定出现在 循环有序区间, 这里 未命中 即可以查找 循环有序区间 为判别条件
+
+
+		- 寻找峰值(山脉数组)
+			- 命中条件 arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1], 之前一定先预处理一下 越界问题
+				if mid == 0 {
+					low = mid + 1
+				} else if mid == lenA-1 {
+					high = mid - 1
+				}
+			- 未命中 即可以归咎为 寻找山脉问题
+				arr[mid] > arr[mid - 1] //山脉的左端
+				arr[mid] < arr[mid - 1]{ //山脉的右端
+				这里不给 >= / <= 是因为没有重复数字
 
 二. 哈希表:
 	实现方式:

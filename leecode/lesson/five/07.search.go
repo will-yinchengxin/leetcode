@@ -20,7 +20,35 @@ package five
 	输入：nums = [1], target = 0
 	输出：-1
 */
-// 数组的特征是 先增后降, 问题的关键是找到中间点
+
+// 1) 先找有序区间
+// 2) 判断 target 是否在有序区间内
+func searchOneAno(nums []int, target int) int {
+	lenN := len(nums)
+	low := 0
+	high := lenN - 1
+
+	for low <= high {
+		mid := low + (high - low)/2
+		if nums[mid] == target {
+			return mid
+		} else if nums[low] <= nums[mid] { // 左有序
+			if target >= nums[low] && target < nums[mid] {
+				high = mid - 1
+			} else {
+				low = mid + 1
+			}
+		} else { // 右有序
+			if target > nums[mid] && target <= nums[high] {
+				low = mid + 1
+			} else {
+				high = mid - 1
+			}
+		}
+	}
+	return -1
+}
+
 func searchOne(nums []int, target int) int {
 	/*
 		1) 正常逻辑是 nums[mid] > target 向左边收缩查询
@@ -32,7 +60,6 @@ func searchOne(nums []int, target int) int {
 	low := 0
 	high := lenN - 1
 
-	tag := -1
 	for low <= high {
 		mid := low + (high - low)/2
 		if nums[mid] == target {
@@ -51,5 +78,6 @@ func searchOne(nums []int, target int) int {
 			}
 		}
 	}
-	return  tag
+	return -1
 }
+

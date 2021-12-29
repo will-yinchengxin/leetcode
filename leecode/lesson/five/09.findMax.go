@@ -32,10 +32,8 @@ arr[i] > arr[i+1] > ... > arr[arr.length - 1]
 	0 <= arr[i] <= 106
 	题目数据保证 arr 是一个山脉数组
 */
-// 查找数组中最大元素, 使用二分查找
+// 查找峰值, 使用二分查找
 func peakIndexInMountainArray(arr []int) int {
-	// [3,4,5,1]
-	// 4 5 1 2 3
 	lenA := len(arr)
 	low := 0
 	high := lenA-1
@@ -46,12 +44,18 @@ func peakIndexInMountainArray(arr []int) int {
 		if low == high {
 			return mid
 		}
-		if (mid != 0 && arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1]) || (mid == 0 && arr[mid] > arr[high]) {
-			return mid
-		} else if arr[mid] > arr[high] {
-			high = mid - 1
-		} else {
+		// 先找命中再未命中(题目数据保证 arr 是一个山脉数组)
+		// 预先处理越界情况
+		if mid == 0 {
 			low = mid + 1
+		} else if mid == lenA-1 {
+			high = mid - 1
+		} else if arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1] { // 这里会出不先越界
+			return mid
+		} else if arr[mid] > arr[mid - 1]{ //山脉的左端
+			low = mid + 1
+		} else { // 山脉的右端
+			high = mid -1
 		}
 	}
 	return -1

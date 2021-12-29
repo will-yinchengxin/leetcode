@@ -55,12 +55,13 @@ func findMin(nums []int) int {
 		if low == high {
 			return nums[low]
 		}
-		// 这里不能为 nums[mid] < nums[low]
+		// 先处理 命中 再处理 未命中
+		// 最小(大)值一定出现在 循环有序 区间
 		if (mid != 0 && nums[mid] < nums[mid-1]) || (mid == 0 && nums[mid] < nums[high]) {
 			return nums[mid] // 根据既定的范式, 返回值永远是 mid
-		} else if nums[mid] > nums[high] {
+		} else if nums[mid] > nums[high] { // 右循环有序
 			low = mid + 1
-		} else {
+		} else { // 右侧非循环有序: 1) 左侧有序  2) 左侧循环有序
 			high = mid - 1
 		}
 	}

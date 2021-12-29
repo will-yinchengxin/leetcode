@@ -21,6 +21,36 @@ package five
 	-2^31 <= nums[i] <= 2^31 - 1
 	对于所有有效的 i 都有 nums[i] != nums[i + 1]
 */
-//func findPeakElement(nums []int) int {
-//
-//}
+func findPeakElement(nums []int) int {
+	lenA := len(nums)
+	low := 0
+	high := lenA-1
+
+	for low <= high {
+		mid := low + (high - low)/2
+
+		// 这种情况一定要考虑到
+		if low == high {
+			return mid
+		}
+		// 先找命中再未命中(题目数据保证 nums 是一个山脉数组)
+		// 预先处理越界情况
+		if mid == 0 {
+			// 处理 [2,1] 这种情况
+			if nums[mid] < nums[high] {
+				low = mid + 1
+			} else {
+				return mid
+			}
+		} else if mid == lenA-1 {
+			high = mid - 1
+		} else if nums[mid] > nums[mid-1] && nums[mid] > nums[mid+1] { // 这里会出不先越界
+			return mid
+		} else if nums[mid] > nums[mid - 1]{ //山脉的左端
+			low = mid + 1
+		} else { // 山脉的右端
+			high = mid -1
+		}
+	}
+	return -1
+}

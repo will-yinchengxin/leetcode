@@ -28,3 +28,9 @@ keep:
 
 阿里本地生活算法题(https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/)：
     1) 旋转数组二分查找
+
+一点咨询算法题：
+    1000篇文章，每篇文章有3个属性，id，score，类别，目前已经按score倒序排好。
+    以10篇为一个窗口，有2个要求
+        - 1、每个窗口内文章类型不能超过2。
+        - 2、在保证前述要求的前提下，score越高越靠前。

@@ -21,9 +21,7 @@ package five
 	get函数的调用次数不会超过100000
 */
 
-
-
-func Constructor(book []string) WordsFrequency {
+func constructor(book []string) WordsFrequency {
 	hashMap := make(map[string]int)
 	for lenB, i := len(book), 0;  i < lenB; i++ {
 		if _, ok := hashMap[book[i]]; !ok {

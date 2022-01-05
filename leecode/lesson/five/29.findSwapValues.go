@@ -20,8 +20,8 @@ package five
 func findSwapValues(array1 []int, array2 []int) []int {
 	/*
 		1) 连个数组的和一定为偶数, 奇数情况下此题目不成立
-		2) 获取 两个数组 的 和 与 sum/2 的差值
-		3) 应用 hashMap 找出各自的差值即可
+		2) 获取 两个数组的和的一半与 sum2 的差值
+		3) 再 hash1 相应的差值即可
 	*/
 	len1 := len(array1)
 	len2 := len(array2)
@@ -35,34 +35,23 @@ func findSwapValues(array1 []int, array2 []int) []int {
 		sum1 += array1[i]
 	}
 
-	hash2 := make(map[int]struct{})
 	sum2 := 0
 	for i := 0; i < len2; i++ {
-		if _, ok := hash2[array2[i]]; !ok {
-			hash2[array2[i]] = struct{}{}
-		}
 		sum2 += array2[i]
 	}
 
 	sumAll := sum1 + sum2
-	if !judgeEvenOrOdd(sumAll) {
+	if !(sumAll % 2 == 1) {
 		return []int{}
 	}
 
-	diff := sum1 - sum2
-
-	res := []int{}
-	for i:=0 ; i < len2; i++{
-		if _ ,ok :=hash1[diff - array2[i]]; ok {
-			res = append(res, array2[i])
-			res = append(res, array2[i] - diff)
+	diff := sumAll/2 - sum2
+	for i:= 0 ; i < len2; i++{
+		target := array2[i] + diff
+		if _ ,ok :=hash1[target]; ok {
+			return []int{target, array2[i]}
 		}
 	}
-	return res
+	return []int{}
 }
-func judgeEvenOrOdd(num int) bool {
-	if num % 2 == 1 {
-		return false
-	}
-	return true
-}
+

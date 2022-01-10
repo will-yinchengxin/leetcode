@@ -1,4 +1,5 @@
 package six
+
 /*
 二叉树:
 	- 二叉树(BT)
@@ -205,41 +206,86 @@ package six
 		二叉查找树(BST) 删除操作:
 			- 要删除节点没有子节点(简单)
 				只需要直接将父节点中指向要删除节点的指针置为 nil 即可
+
 			- 要删除节点只有一个子节点(中等)
+				只需要更新父节点中指向要删除节点的指针,让其从新指向要删除节点的子节点即可
 
 			- 要删除节点有两个子节点(复杂)
+				需要找到这个节点右子树中的`最小节点`,把他替换到删除的节点上(或者左子树上最大节点,总之就是最接近这个被删除节点值的节点)
+				再删除掉这个`最小节点`,因为最小节点没有左子节点,所以可以利用上面两条规则删除这个最小节点
 
+			func delete(root *Node, target int) {
+				p := root
+				var pp *Node
+				for p != nil && p.val != target {
+					pp = p
+					if target > p.val {
+						p = p.right
+					} else {
+						p = p.left
+					}
+				}
+				if p == nil {
+					return
+				}
 
-	- 平衡二叉查找树(BBST) // 经典: 红黑树
+				// 要删除的节点有两个子节点
+				if p.left != nil && p.right != nil { // 查找右子树的最小节点
+					minP := p.right
+					minPP := p // 作为 minP 的父节点
+					for minP != nil {
+						minPP = minP
+						minP = minP.left
+					}
+					// 删除(两个子节点).png
+					// p = 6    pp = 15
+					// minP = 7 minPP = 10
+					p.val = minP.val
+					p = minP
+					pp = minPP
+				}
 
+				// 要删除的节点 1)只有一个子节点 2)为叶子节点
+				// 将两种情况融合
+				var child *Node // child 三种情况 1) p.left 2) p.right 3) nil
+				if p.left != nil {
+					child = p.left
+				} else if p.right != nil {
+					child = p.right
+				}
+				if pp == nil { // root 为 nil
+					root = child
+				} else if pp.left == p {
+					pp.left = child
+				} else {
+					pp.right = child
+				}
+			}
+			时间复杂度: O(h) 空间复杂度:O(h)
+
+	- 平衡二叉查找树(BBST) // 经典: 红黑树(了解, 重点操作是如何维护树的平衡)
+		二叉树的 查找, 插入, 删除的性能跟树的高度成正比, 极端情况下退化为 O(h)
+
+		解决普通二叉查找树的性能退化问题:
+			再频繁的动态更新过程中, 可能出现高度远大于 log_2^n 的情况, 从而导致操作的效率降低, 极端情况下, 二叉树退化为链表, 时间复杂度退化为 O(n)
+
+		平衡二叉查找树: 比如 AVL 树
+			- 任意一个节点的左右子树的高度相差不能 > 1
+			- 树的高度也就是 log_2^n
+
+	树的性能对比表:
+		操作的性能: 完全二叉树 > 平衡二叉树 > 近似平衡二叉树
+		维护平衡的成本: 完全二叉树 > 平衡二叉树 > 近似平衡二叉树
+
+		这就类似 db 中建立索引, 建立过多索引 搜索性能上去了, 但是 写操作 的性能下降了, 为了 读写 性能折中衍生了 平衡二叉查找树
 */
-type Node struct {
-	val int
-	left *Node
-	right *Node
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
 }
-func insertR(root *Node, target int) {
-	if root == nil {
-		return
-	}
-	p := root
-	for p != nil {
-		if target > p.val {
-			if p.right == nil {
-				p.right = &Node{
-					val: target,
-				}
-				return
-			}
-			p = p.right
-		} else {
-			if p.left == nil {
-				p.left = &Node{
-					val: target,
-				}
-				return
-			}
-			p = p.left
-		}
-	}
+
+type Node struct {
+	Val      int
+	Children []*Node
 }

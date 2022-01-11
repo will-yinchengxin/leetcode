@@ -1,5 +1,6 @@
 package six
 /*
+https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/
 N 叉树的前序遍历
 
 输入：root = [1,null,3,2,4,null,5,6]
@@ -9,5 +10,18 @@ N 叉树的前序遍历
 输出：[1,2,3,6,7,11,14,4,8,12,5,9,13,10]
 */
 func preorder(root *Node) []int {
+	res := []int{}
 
+	var preo func(node *Node)
+	preo = func(node *Node) {
+		if node == nil {
+			return
+		}
+		res = append(res, node.Val)
+		for i := 0; i < len(node.Children); i++ {
+			preo(node.Children[i])
+		}
+	}
+	preo(root)
+	return res
 }

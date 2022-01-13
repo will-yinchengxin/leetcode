@@ -52,14 +52,20 @@ func convertBST(root *TreeNode) *TreeNode {
 	return root
 }
 //---------------------------------------------
+//var Sum int = 0 // 这种方式报错
+var Sum int
 func convertBSTAno(root *TreeNode) *TreeNode {
 	if root == nil {
 		return nil
 	}
+	/*
+		关于这里为什么需要对 var 的 变量做一个赋值, 而直接在最外部 赋值声明如: var Sum = 0, 程序会报错啊
+	*/
+	Sum = 0 // 这里需要内部初始话这个变量值
 	convertBST_R(root)
 	return root
 }
-var Sum int = 0
+
 func convertBST_R(node *TreeNode) {
 	if node == nil {
 		return

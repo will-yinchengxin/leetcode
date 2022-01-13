@@ -1,7 +1,5 @@
 package six
 
-import "math"
-
 /*
 https://leetcode-cn.com/problems/validate-binary-search-tree/
 
@@ -26,7 +24,7 @@ https://leetcode-cn.com/problems/validate-binary-search-tree/
 	树中节点数目范围在[1, 104] 内
 	-231 <= Node.val <= 231 - 1
 */
-var IsValid = true
+var IsValid bool
 
 func isValidBST(root *TreeNode) bool {
 	/*
@@ -48,6 +46,7 @@ func isValidBST(root *TreeNode) bool {
 	//pore(root)
 	// 判断 res 的有序性
 
+	IsValid = true
 	// 方式二
 	// 查找左右子树的 最大值 和 最小值
 	if root == nil {
@@ -59,44 +58,34 @@ func isValidBST(root *TreeNode) bool {
 func dfs(node *TreeNode) []int {
 	max := node.Val
 	min := node.Val
+	/*
+		1) 左边的最大值 小于 node.Val, 整体一定小于 node.Val
+		2) 右边的最小值 大于 node.Val, 整体一定大于 node.Val
+		3) 最终找到 左边的 最小值 与 右边的 最大值
+	*/
 	// 寻找左边的最大值
 	if node.Left != nil {
+		LeftData := dfs(node.Left)
 		if IsValid == false { // 提前退出
 			return nil
 		}
-		LeftData := dfs(node.Left)
 		if LeftData[1] >= node.Val { // 左边的最大值 还大于 node
 			IsValid = false
 			return nil
 		}
-		min = LeftData[1]
+		min = LeftData[0] // 将左边的最小值存储
 	}
 	// 寻找右边的最小值
 	if node.Right != nil {
+		RightData := dfs(node.Right)
 		if IsValid == false { // 提前退出
 			return nil
 		}
-		RightData := dfs(node.Right)
 		if RightData[0] <= node.Val { // 右边最小值 还小于 node
 			IsValid = false
 			return nil
 		}
-		max = RightData[0]
+		max = RightData[1] // 将右边的最大值存储
 	}
 	return []int{min, max}
-}
-
-// ----------------------------------------------------------------------
-func isValidBSTAno(root *TreeNode) bool {
-	return helper(root, math.MinInt64, math.MaxInt64)
-}
-
-func helper(root *TreeNode, lower, upper int) bool {
-	if root == nil {
-		return true
-	}
-	if root.Val <= lower || root.Val >= upper {
-		return false
-	}
-	return helper(root.Left, lower, root.Val) && helper(root.Right, root.Val, upper)
 }

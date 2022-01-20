@@ -28,6 +28,26 @@ func constructFromPrePost(preorder []int, postorder []int) *TreeNode {
 		但是拆解到最后发现，除了能够快速确定根节点以外， 不能够准确的区分左右子树
 
 		那么另辟蹊径， 发现前序遍历的 root 节点后的一个节点很神奇，它可能是左子树的根节点， 也可能是右子树的根节点
+		- 存在 左子树 或者 左子树和右子树 都存在 为 左子树
+		- 只存在 右子树 的时候 为右子树
+
+		存在一种特殊情况:
+			  1
+			 /
+			2
+		   / \
+		   3  4
+		   前： 1 2 3 4
+		   后： 3 4 2 1
+
+			1
+			 \
+			 2
+			/ \
+			3  4
+			前： 1 2 3 4
+			后： 3 4 2 1
+		解决办法：这种情况会有两种解答，那么可以统一使用左子树输出即可
 	*/
 	return myBuild_PrePost(preorder, 0, len(preorder), postorder, 0, len(postorder))
 }

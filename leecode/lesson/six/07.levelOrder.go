@@ -1,7 +1,7 @@
 package six
 /*
 https://leetcode-cn.com/problems/binary-tree-level-order-traversal/
-给你二叉树的根节点 root ，返回其节点值的 层序遍历 。 （即逐层地，从左到右访问所有节点）。
+给你二叉树的根节点 root ，返回其节点值的 层序遍历。（即逐层地，从左到右访问所有节点）。
 
 示例 1：
 	输入：root = [3,9,20,null,null,15,7]
@@ -26,6 +26,7 @@ func levelOrderByNil(root *TreeNode) [][]int {
 	}
 	tmp := []int{}
 	res := [][]int{}
+
 	arrList := make([]*TreeNode, 0)
 	arrList = append(arrList, root)
 	arrList = append(arrList, nil)

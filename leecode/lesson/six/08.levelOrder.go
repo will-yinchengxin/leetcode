@@ -28,6 +28,7 @@ func levelOrderSnake(root *TreeNode) [][]int {
 	}
 	tmp := []int{}
 	res := [][]int{}
+
 	arrList := make([]*TreeNode, 0)
 	arrList = append(arrList, root)
 	size := 1

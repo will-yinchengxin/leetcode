@@ -20,8 +20,6 @@ https://leetcode-cn.com/problems/find-bottom-left-tree-value/
 	-231<= Node.val <= 231- 1
 */
 // 按层遍历, 最后一层的第一个元素
-//func findBottomLeftValue(root *TreeNode) int {}
-
 func findBottomLeftValueAno(root *TreeNode) int {
 	// 按 层 从右向左遍历, 最后一个元素, 就是要找的元素
 	helpList := make([]*TreeNode, 0)

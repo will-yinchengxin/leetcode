@@ -23,20 +23,6 @@ package six
 	输出：[1,2]
 */
 // 前序遍历
-//func preorderTraversal(root *TreeNode) (res []int) {
-//	var preorder func(*TreeNode)
-//	preorder = func(node *TreeNode) {
-//		if node == nil {
-//			return
-//		}
-//		res = append(res, node.Val)
-//		preorder(node.Left)
-//		preorder(node.Right)
-//	}
-//
-//	preorder(root)
-//	return
-//}
 func preorderTraversal(root *TreeNode) (res []int) {
 	var preorderTraversal_X func(*TreeNode)
 	preorderTraversal_X = func(node *TreeNode) {
@@ -50,9 +36,10 @@ func preorderTraversal(root *TreeNode) (res []int) {
 	preorderTraversal_X(root)
 	return
 }
-//----------------------- leetcode 执行错误--------------------------
-//var res = []int{}
+//-------------------------------------------------
+//var res []int
 //func preorderTraversal(root *TreeNode) []int {
+//	res = []int{}
 //	preorderTraversal_X(root)
 //	return res
 //}

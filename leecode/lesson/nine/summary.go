@@ -278,11 +278,48 @@ package nine
 		}
 
 	6) 深度和广度优先搜索
-		实际上，DFS也是一种回溯算法，也可以看做多阶段决策模型，用回溯模板解决。
+		实际上，DFS也是一种回溯算法，也可以看做多阶段决策模型，用回溯来解决。
 			·每个阶段都是基于当前节点移动到下一个节点。
 			·可选列表是：相邻并没有被访问过的节点。
 			·当前阶段做不同的选择，对应下一个阶段是不同的。
 			·回溯的结束条件是：所有节点都已经访问完或找到了终止节点。
 			·在回溯的过程中，我们用visited数组，记录已经遍历过的顶点，以免循环重复遍历。
+
 		关系图.png
+
+		// ----------------- 理由回溯解决问题 ---------------------
+		var val int
+		var visited []bool
+		var resultPath []int
+		var matrix []list.List
+		func dfs2(s, t int) []int {
+			visited = make([]bool, val)
+			path := []int{}
+			path = append(path, s)
+			visited[s] = true
+			backtrackDFS(s, t, path)
+			return resultPath
+		}
+		func backtrackDFS(s, t int, path []int) {
+			if s == t { // 结束条件
+				tmp := make([]int, len(path))
+				copy(tmp, path)
+				resultPath = append(resultPath, tmp...)
+				return
+			}
+
+			tmp := matrix[s].Front()
+			for i := 0; i < matrix[s].Len(); i++ {
+				if i != 0 {
+					tmp = tmp.Next()
+				}
+				q := tmp.Value.(int)
+				if !visited[q] {
+					path = append(path, q)
+					visited[q] = true
+					backtrackDFS(q, t, path)
+					path = path[:len(path)-1]
+				}
+			}
+		}
 **/

@@ -25,24 +25,20 @@ https://leetcode-cn.com/problems/color-fill-lcci/
 	image[i][j] 和newColor表示的颜色值在范围[0, 65535] 内。
 */
 func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
-
+	n := len(image)
+	m := len(image[0])
+	dfsFloodFill(image, n, m, sr, sc, image[sr][sc], newColor)
+	return image
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+func dfsFloodFill(image[][]int, n, m, sr, sc, color, newColor int) {
+	image[sr][sc] = newColor
+	dirs := [][]int{{-1,0}, {1,0}, {0,-1}, {0,1}}
+	for i := 0; i < 4; i++ {
+		newr := sr + dirs[i][0]
+		newc := sc + dirs[i][1]
+		if newr < 0 || newr >= n || newc < 0 || newc >= m || image[newr][newc] != color || image[newr][newc] == newColor {
+			continue
+		}
+		dfsFloodFill(image, n, m, newr, newc, color, newColor)
+	}
+}

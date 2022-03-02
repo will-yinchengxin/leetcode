@@ -322,4 +322,60 @@ package nine
 				}
 			}
 		}
+
+	拓扑排序算法
+		- Kahn 算法
+		- DFS 算法
+
+		Kahn 算法(拓扑排序.png):
+			定义数据结构：如果s需要先于t执行，那就添加一条s指向t的边。所以，每个顶点的入度表示这个顶点依赖多少个其他顶点。
+			如果某个顶点的入度变成了0，就表示这个顶点没有依赖的顶点了，或者说这个顶点依赖的顶点都已执行。
+
+			我们从图中找出一个入度为0的顶点，将其输出到拓扑排序的结果序列中，这里的输出就表示被执行。既然这个顶点已经被执行了，
+			那么所有依赖它的顶点的入度都可以减1，反映到图上就是把这个顶点的可达顶点的入度都减1。我们循环执行上面的过程，直到所有的顶点都被输出。
+			最后的结果序列就是满足所有局部依赖关系的一个拓扑排序。
+			//----------------------- Kahn(code) ----------------------------------
+			// numCount 元素个数
+			// preArr   待处理数组
+			func toSortByKahn(numCount int, preArr [][]int) {
+				// 构造成临接矩阵
+				adj := make([][]int, numCount)
+				for i := 0; i < numCount; i++ {
+					adj[i] = make([]int, 0)
+				}
+				for i := 0; i < len(preArr); i++ {
+					adj[preArr[i][1]] = append(adj[preArr[i][1]], preArr[i][0])
+				}
+
+				// 统计每个顶点的入度
+				inDegree := make([]int, numCount)
+				for i := 0; i < numCount; i++ {
+					for j := 0; j < len(adj[i]); j++ {
+						w := adj[i][j]
+						inDegree[w]++
+					}
+				}
+
+				// 记录入度为 0 的顶点
+				zeroSet := make([]int, 0) // 度为 0 的集合
+				for i := 0; i < len(inDegree); i++ {
+					if inDegree[i] == 0 {
+						zeroSet = append(zeroSet, i)
+					}
+				}
+
+				// 进行拓扑排序的输出等操作
+				for len(zeroSet) != 0 {
+					i := zeroSet[0]
+					zeroSet = zeroSet[1:]
+					fmt.Println(i)
+					for j := 0; j < len(adj[i]); j++ {
+						k := adj[i][j]
+						inDegree[k]--
+						if inDegree[k] == 0 {
+							zeroSet = append(zeroSet, k)
+						}
+					}
+				}
+			}
 **/

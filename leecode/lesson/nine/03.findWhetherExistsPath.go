@@ -1,7 +1,5 @@
 package nine
 
-import "fmt"
-
 /*
 https://leetcode-cn.com/problems/route-between-nodes-lcci/
 
@@ -34,12 +32,11 @@ func findWhetherExistsPath(n int, graph [][]int, start int, target int) bool {
 		adj[i] = make(map[int]bool, 0)
 	}
 	for i := 0; i < len(graph); i++ { // 构造成临接矩阵
-		if !adj[graph[i][0]][graph[i][1]] {
-			fmt.Println(graph[i])
+		if _, ok := adj[graph[i][0]][graph[i][1]]; !ok {
+		//if !adj[graph[i][0]][graph[i][1]] {
 			adj[graph[i][0]][graph[i][1]] = true
 		}
 	}
-	fmt.Println(adj)
 	dfsF(start, target)
 	return found
 }
@@ -51,7 +48,7 @@ func dfsF(cur int, target int) {
 	}
 	visitedF[cur] = true
 	for next, _ := range adj[cur] {
-		if visitedF[next] {
+		if !visitedF[next] {
 			dfsF(next, target)
 		}
 	}

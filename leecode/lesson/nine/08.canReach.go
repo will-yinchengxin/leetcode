@@ -45,8 +45,17 @@ func canReach(arr []int, start int) bool {
 }
 func dfsCanReach(arr []int, curI int) {
 	if reached || arr[curI] == 0 {
+		reached = true
 		return
 	}
 	visitedCanReach[curI] = true
-
+	// 开始左右移动
+	move2Left := curI - arr[curI]
+	if move2Left >= 0 && move2Left < len(arr) && !visitedCanReach[move2Left] {
+		dfsCanReach(arr, move2Left)
+	}
+	move2Right := curI + arr[curI]
+	if move2Right >= 0 && move2Right < len(arr) && !visitedCanReach[move2Right] {
+		dfsCanReach(arr, move2Right)
+	}
 }
